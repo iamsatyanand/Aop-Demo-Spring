@@ -2,8 +2,10 @@ package com.satyanand.aop_demo_app.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -32,6 +34,26 @@ public class LoggingAspect {
     @Before("within (com.satyanand.aop_demo_app..*)")
     public void beforeServiceImplCalls(){
         log.info("Service impl calls");
+    }
+
+//    @Before("@annotation(org.springframework.transaction.annotation.Transactional)")
+
+    @Before("myLoggingAndAopMethodsPointcut")
+    public void beforeMyLoggingAndAopMethodsCalls(){
+        log.info("Before mylogging annotation calls.");
+    }
+
+    @After("myLoggingAndAopMethodsPointcut")
+    public void afterMyLoggingAndAopMethodsCalls(){
+        log.info("Before mylogging annotation calls.");
+    }
+
+
+    //we can also use multiple pointcuts
+    // also we can declare same pointcuts with empty method and use them in multiple advices
+    @Pointcut("@annotation(com.satyanand.aop_demo_app.aspects.MyLogging) && within (com.satyanand.aop_demo_app..*)")
+    public void myLoggingAndAopMethodsPointcut(){
+
     }
 
 }
